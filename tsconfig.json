@@ -1,0 +1,14 @@
+{
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.scripts.json"
+    },
+    {
+      "path": "./packages/typescript/wallet-contracts"
+    },
+    {
+      "path": "./apps/web"
+    }
+  ]
+}

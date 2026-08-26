@@ -1,0 +1,55 @@
+[project]
+name = "cipher-wallet"
+version = "0.1.0a0"
+description = "Self-custodial Litecoin Testnet browser wallet"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [{ name = "Connor Hunter" }]
+dependencies = [
+  "boto3>=1.35,<2",
+  "cipher-wallet-core",
+  "fastapi>=0.115,<1",
+  "mangum>=0.19,<1",
+  "pydantic-settings>=2.6,<3",
+  "uvicorn>=0.30,<1",
+]
+
+[dependency-groups]
+dev = [
+  "httpx>=0.27,<1",
+  "mypy>=1.13,<3",
+  "pytest>=9.0.3,<10",
+  "pytest-cov>=6,<8",
+  "ruff>=0.8,<1",
+]
+
+[tool.uv]
+package = false
+required-version = "==0.12.6"
+
+[tool.uv.sources]
+cipher-wallet-core = { workspace = true }
+
+[tool.uv.workspace]
+members = ["packages/python/*"]
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers"
+pythonpath = ["apps/api"]
+testpaths = ["apps/api/tests", "packages/python/cipher-wallet-core/tests"]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+extend-exclude = [".venv"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.12"
+files = ["apps/api", "packages/python/cipher-wallet-core/src"]
+mypy_path = ["apps/api", "packages/python/cipher-wallet-core/src"]
+strict = true
+warn_unused_configs = true

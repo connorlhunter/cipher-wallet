@@ -1,0 +1,1 @@
+"""Cipher Wallet FastAPI package."""
