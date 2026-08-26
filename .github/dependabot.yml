@@ -35,6 +35,9 @@ updates:
       timezone: America/New_York
     open-pull-requests-limit: 5
     rebase-strategy: auto
+    ignore:
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major"]
     groups:
       production:
         dependency-type: production
