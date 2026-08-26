@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tanstack/react-router": "^1.170.30",
+    "@tanstack/react-router": "^1.170.31",
     "react": "^19.2.8",
     "react-dom": "^19.2.8"
   },
