@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "cipher-trace",
+      "name": "cipher-wallet",
       "devDependencies": {
         "@eslint/js": "^10.0.1",
         "@types/bun": "^1.3.14",
@@ -20,7 +20,7 @@
     },
     "apps/web": {
       "name": "@cipher-wallet/web",
-      "version": "0.1.0-alpha.0",
+      "version": "0.1.0-alpha.1",
       "dependencies": {
         "@tanstack/react-router": "^1.170.30",
         "react": "^19.2.8",
@@ -35,7 +35,7 @@
     },
     "packages/typescript/wallet-contracts": {
       "name": "@cipher-wallet/wallet-contracts",
-      "version": "0.1.0-alpha.0",
+      "version": "0.1.0-alpha.1",
       "dependencies": {
         "zod": "^4.4.3",
       },
