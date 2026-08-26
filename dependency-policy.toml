@@ -1,0 +1,7 @@
+# The reviewed source of truth for temporary Bun release-age exceptions and
+# exact JavaScript overrides. Add entries only with a specific security or
+# compatibility reason. The lockfiles retain exact resolved versions.
+
+[pins]
+
+[releaseAgeExcludes]

@@ -1,0 +1,12 @@
+paths-ignore:
+  - ".codeql/**"
+  - ".mypy_cache/**"
+  - ".pytest_cache/**"
+  - ".ruff_cache/**"
+  - ".venv/**"
+  - "__pycache__/**"
+  - "build/**"
+  - "coverage/**"
+  - "dist/**"
+  - "**/dist/**"
+  - "node_modules/**"

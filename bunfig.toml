@@ -1,0 +1,3 @@
+[install]
+# Wait one week before accepting a newly published package by default.
+minimumReleaseAge = 604800

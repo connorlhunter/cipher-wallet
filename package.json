@@ -1,0 +1,59 @@
+{
+  "name": "cipher-wallet",
+  "version": "0.1.0-alpha.0",
+  "description": "Self-custodial Litecoin Testnet browser wallet",
+  "license": "MIT",
+  "private": true,
+  "repository": "https://github.com/connorlhunter/cipher-wallet",
+  "type": "module",
+  "packageManager": "bun@1.3.14",
+  "engines": {
+    "bun": "1.3.14"
+  },
+  "toolchain": {
+    "codeql": "2.26.3"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/typescript/*"
+  ],
+  "scripts": {
+    "audit": "bun run deps:policy:check && bun audit --audit-level=high && uv lock --check && uv run pip check",
+    "bootstrap": "bun scripts/bootstrap.ts",
+    "build:web": "bun run --cwd apps/web build",
+    "codeql:scan": "bun scripts/security/codeql-scan.ts",
+    "coverage:build": "bun run coverage:typescript && bun run coverage:python && bun run coverage:render && bun run coverage:render:pdf",
+    "coverage:publish": "bun run coverage:typescript && bun run coverage:python && bun scripts/publish/publish-coverage.ts",
+    "coverage:python": "uv run pytest --cov=apps/api/app --cov=cipher_wallet_core --cov-report=term-missing --cov-fail-under=95 && uv run python -m coverage lcov -o coverage/python.lcov && bun scripts/coverage/check-python-coverage.ts",
+    "coverage:render": "bun scripts/coverage/render-coverage-report.ts",
+    "coverage:render:pdf": "bun scripts/coverage/render-coverage-pdf.ts",
+    "coverage:typescript": "bun test packages/typescript --coverage --coverage-reporter=text --coverage-reporter=lcov --coverage-dir=coverage --timeout 30000 && bun scripts/coverage/check-typescript-coverage.ts",
+    "deps:policy": "bun scripts/dependencies/sync-dependency-policy.ts",
+    "deps:policy:check": "bun scripts/dependencies/sync-dependency-policy.ts --check",
+    "dev:web": "bun run --cwd apps/web dev",
+    "format": "bun x prettier --write . --ignore-unknown",
+    "format:check": "bun x prettier --check . --ignore-unknown",
+    "hooks:setup": "bun scripts/setup-git-hooks.ts",
+    "lint:ts": "bun x eslint .",
+    "naming:check": "bun scripts/change-naming.ts --branch",
+    "prepare": "bun scripts/setup-git-hooks.ts",
+    "test:ts": "bun test scripts packages/typescript",
+    "toolchain:check": "bun scripts/check-toolchain.ts",
+    "typecheck:ts": "tsgo --build --pretty false",
+    "verify": "bun run verify:ts && bun run audit && bun run codeql:scan && uv run ruff check . && uv run mypy && bun run coverage:python",
+    "verify:ts": "bun run naming:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run build:web && bun run coverage:typescript"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/bun": "^1.3.14",
+    "@typescript/native-preview": "^7.0.0-dev.20260707.2",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.11.0",
+    "jiti": "^2.6.1",
+    "prettier": "^3.9.6",
+    "puppeteer": "^25.3.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0"
+  }
+}
