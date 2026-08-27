@@ -1,6 +1,6 @@
 [project]
 name = "cipher-wallet"
-version = "0.1.0a1"
+version = "0.1.0a2"
 description = "Self-custodial Litecoin Testnet browser wallet"
 readme = "README.md"
 requires-python = ">=3.12"
