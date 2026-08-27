@@ -21,7 +21,7 @@
     },
     "apps/web": {
       "name": "@cipher-wallet/web",
-      "version": "0.1.0-alpha.1",
+      "version": "0.1.0-alpha.2",
       "dependencies": {
         "@tanstack/react-router": "^1.170.31",
         "react": "^19.2.8",
@@ -36,7 +36,7 @@
     },
     "packages/typescript/wallet-contracts": {
       "name": "@cipher-wallet/wallet-contracts",
-      "version": "0.1.0-alpha.1",
+      "version": "0.1.0-alpha.2",
       "dependencies": {
         "zod": "^4.4.3",
       },

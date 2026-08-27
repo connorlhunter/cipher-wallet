@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.1.0-alpha.2] - 2026-08-27
+
+### Added
+
+- Project-owned coverage and changelog artifacts in JSON/PDF and Markdown/PDF formats.
+
+### Changed
+
+- Build both artifacts before publishing, then invalidate them together.
+
 ## [0.1.0-alpha.1] - 2026-08-26
 
 ### Added

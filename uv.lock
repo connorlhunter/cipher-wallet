@@ -82,7 +82,7 @@ wheels = [
 
 [[package]]
 name = "cipher-wallet"
-version = "0.1.0a1"
+version = "0.1.0a2"
 source = { virtual = "." }
 dependencies = [
     { name = "boto3" },
@@ -123,7 +123,7 @@ dev = [
 
 [[package]]
 name = "cipher-wallet-core"
-version = "0.1.0a1"
+version = "0.1.0a2"
 source = { editable = "packages/python/cipher-wallet-core" }
 dependencies = [
     { name = "pydantic" },
