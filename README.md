@@ -4,7 +4,7 @@ Cipher Wallet is a self-custodial browser wallet for Litecoin Testnet. The brows
 
 Published docs and diagrams:
 
-<https://connorhunter.me/projects/cipher-wallet?viewer=docs#project-viewer>
+<https://connorhunter.me/projects/cipher-wallet/docs>
 
 ## Scope
 
@@ -59,7 +59,11 @@ TypeScript and Python both require at least 95% line and function coverage.
 bun run coverage:build
 ```
 
-The command builds matching overview, TypeScript, and Python reports for the live project view.
+The command builds `coverage/index.json` and `coverage/coverage.pdf` for the live project view. The portfolio renders the JSON itself.
+
+## Releases
+
+`bun run release:publish` validates the package version against `CHANGELOG.md`, then publishes coverage JSON/PDF and changelog Markdown/PDF. The changelog comes directly from the repository’s canonical `CHANGELOG.md`.
 
 ## Roadmap
 

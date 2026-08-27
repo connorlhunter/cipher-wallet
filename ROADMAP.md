@@ -4,7 +4,7 @@ Cipher Wallet will be a self-custodial Litecoin Testnet browser wallet. The orde
 
 Published docs and diagrams:
 
-<https://connorhunter.me/projects/cipher-wallet?viewer=docs#project-viewer>
+<https://connorhunter.me/projects/cipher-wallet/docs>
 
 Live issue hierarchy:
 

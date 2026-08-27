@@ -39,11 +39,16 @@ jobs:
           CIPHER_WALLET_PULL_REQUEST_AUTHOR: ${{ github.event.pull_request.user.login }}
           CIPHER_WALLET_PULL_REQUEST_BODY: ${{ github.event.pull_request.body }}
       - run: bun run audit
+      - run: bun run version:check
       - run: bun run format:check
       - run: bun run lint:ts
       - run: bun run typecheck:ts
+      - name: Test project scripts
+        run: bun run test:scripts
       - name: Build browser client
         run: bun run build:web
+      - name: Build changelog artifacts
+        run: bun run changelog:build
       - name: Enforce TypeScript coverage at 95%
         run: bun run coverage:typescript
       - run: uv run ruff check .
