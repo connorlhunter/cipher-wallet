@@ -57,7 +57,7 @@
     "eslint-config-prettier": "^10.1.8",
     "globals": "^17.11.0",
     "jiti": "^2.6.1",
-    "pdfkit": "^0.19.1",
+    "pdfkit": "^0.20.1",
     "prettier": "^3.9.6",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0"
