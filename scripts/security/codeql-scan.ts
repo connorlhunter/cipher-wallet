@@ -17,8 +17,7 @@ interface ScanTarget {
 const scanTargets: ReadonlyArray<ScanTarget> = [
   {
     language: "javascript-typescript",
-    suite:
-      "codeql/javascript-queries:codeql-suites/javascript-security-extended.qls",
+    suite: "codeql/javascript-queries:codeql-suites/javascript-security-extended.qls",
   },
   {
     language: "python",
@@ -170,9 +169,7 @@ export function sarifResultCount(sarif: unknown): number {
     }
     if (!("results" in run) || run.results === undefined) continue;
     if (!Array.isArray(run.results)) {
-      throw new Error(
-        "CodeQL produced invalid SARIF: results are not an array.",
-      );
+      throw new Error("CodeQL produced invalid SARIF: results are not an array.");
     }
     count += run.results.length;
   }
@@ -231,17 +228,13 @@ export function runCodeqlScan(
   log: (message: string) => void,
 ): ScanSummary {
   if (environment.githubActions === "true") {
-    log(
-      "GITHUB_ACTIONS=true: local CodeQL scan deferred to GitHub's hosted CodeQL analysis.",
-    );
+    log("GITHUB_ACTIONS=true: local CodeQL scan deferred to GitHub's hosted CodeQL analysis.");
     return { findings: 0, skipped: true };
   }
 
   assertCodeqlVersion(runner, environment.repositoryRoot);
   for (const directory of ["databases", "results", "cache"]) {
-    fileSystem.makeDirectory(
-      resolve(environment.repositoryRoot, outputRoot, directory),
-    );
+    fileSystem.makeDirectory(resolve(environment.repositoryRoot, outputRoot, directory));
   }
 
   let findings = 0;
@@ -252,16 +245,10 @@ export function runCodeqlScan(
       cwd: environment.repositoryRoot,
     });
     if (createResult.exitCode !== 0) {
-      throw new Error(
-        "CodeQL database creation failed for " + target.language + ".",
-      );
+      throw new Error("CodeQL database creation failed for " + target.language + ".");
     }
 
-    log(
-      "Analyzing " +
-        target.language +
-        " with its bundled security-extended suite...",
-    );
+    log("Analyzing " + target.language + " with its bundled security-extended suite...");
     const analyzeResult = runner.run(databaseAnalyzeCommand(target), {
       captureOutput: false,
       cwd: environment.repositoryRoot,
@@ -315,8 +302,7 @@ export function runCodeqlCli(
   try {
     return runCodeqlScan(environment, runner, fileSystem, log);
   } catch (error) {
-    const message =
-      error instanceof Error ? error.message : "Unknown CodeQL scan failure.";
+    const message = error instanceof Error ? error.message : "Unknown CodeQL scan failure.";
     errorLog("CodeQL scan failed: " + message);
     return undefined;
   }

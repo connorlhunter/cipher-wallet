@@ -18,22 +18,12 @@ export function checkReleaseVersion(workspaceRoot = process.cwd()): void {
   const changelog = readFileSync(join(workspaceRoot, "CHANGELOG.md"), "utf8");
   const changelogVersion = releaseHeading.exec(changelog)?.[1];
   if (changelogVersion !== version)
-    throw new Error(
-      "CHANGELOG.md must begin with the package.json release version.",
-    );
+    throw new Error("CHANGELOG.md must begin with the package.json release version.");
   for (const manifest of packageManifests.slice(1))
-    assertVersion(
-      manifest,
-      packageVersion(join(workspaceRoot, manifest)),
-      version,
-    );
+    assertVersion(manifest, packageVersion(join(workspaceRoot, manifest)), version);
   const pythonVersion = pythonReleaseVersion(version);
   for (const manifest of pythonManifests)
-    assertVersion(
-      manifest,
-      assignedVersion(join(workspaceRoot, manifest)),
-      pythonVersion,
-    );
+    assertVersion(manifest, assignedVersion(join(workspaceRoot, manifest)), pythonVersion);
 }
 
 /** Converts the repository's npm release format to its Python counterpart. */
@@ -56,16 +46,13 @@ function packageVersion(path: string): string {
 }
 
 function assignedVersion(path: string): string {
-  const version = /^version\s*=\s*"([^"]+)"\s*$/mu.exec(
-    readFileSync(path, "utf8"),
-  )?.[1];
+  const version = /^version\s*=\s*"([^"]+)"\s*$/mu.exec(readFileSync(path, "utf8"))?.[1];
   if (!version) throw new Error(`${path} must contain a release version.`);
   return version;
 }
 
 function assertVersion(path: string, actual: string, expected: string): void {
-  if (actual !== expected)
-    throw new Error(`${path} must use release version ${expected}.`);
+  if (actual !== expected) throw new Error(`${path} must use release version ${expected}.`);
 }
 
 if (import.meta.main) checkReleaseVersion();

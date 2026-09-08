@@ -70,7 +70,6 @@ test("does not publish when either artifact build fails", async (): Promise<void
     failure = error;
   }
   expect(failure).toBeInstanceOf(Error);
-  if (failure instanceof Error)
-    expect(failure.message).toBe("changelog build failed");
+  if (failure instanceof Error) expect(failure.message).toBe("changelog build failed");
   expect(events).toEqual(["build-coverage"]);
 });

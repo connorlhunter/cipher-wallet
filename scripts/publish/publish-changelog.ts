@@ -1,8 +1,5 @@
 import { existsSync } from "node:fs";
-import {
-  buildChangelogArtifact,
-  changelogPaths,
-} from "../changelog/changelog-artifact";
+import { buildChangelogArtifact, changelogPaths } from "../changelog/changelog-artifact";
 import { defaultCommandRunner, type CommandRunner } from "./command-runner";
 const projectSlug = "cipher-wallet";
 export interface PublishChangelogOptions {
@@ -24,9 +21,7 @@ function s3Uri(bucket: string, key: string): string {
   return key ? `s3://${bucket}/${key}/` : `s3://${bucket}/`;
 }
 /** Publishes the canonical changelog as Markdown and a direct PDF. */
-export async function publishChangelog(
-  options: PublishChangelogOptions = {},
-): Promise<void> {
+export async function publishChangelog(options: PublishChangelogOptions = {}): Promise<void> {
   const env = options.env ?? process.env;
   const paths = changelogPaths(options.workspaceRoot);
   if (!existsSync(paths.markdown) || !existsSync(paths.pdf))
@@ -38,11 +33,7 @@ export async function publishChangelog(
       envValue(env.SOURCE_ARTIFACTS_PREFIX),
       "Source changelog copy",
     ],
-    [
-      envValue(env.ARTIFACTS_BUCKET),
-      envValue(env.ARTIFACTS_PREFIX),
-      "Live changelog artifact",
-    ],
+    [envValue(env.ARTIFACTS_BUCKET), envValue(env.ARTIFACTS_PREFIX), "Live changelog artifact"],
   ] as const;
   const configured = destinations.filter(([bucket]) => Boolean(bucket));
   if (configured.length === 0)

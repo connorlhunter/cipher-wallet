@@ -56,19 +56,14 @@ export function assertCoverageThreshold(
   threshold = minimumCoveragePercent,
 ): CoverageTotals {
   const totals = coverageTotals(lcov);
-  const failures = (
-    Object.entries(totals) as Array<[keyof CoverageTotals, CoverageMetric]>
-  )
+  const failures = (Object.entries(totals) as Array<[keyof CoverageTotals, CoverageMetric]>)
     .filter(([, metric]) => percentage(metric) < threshold)
     .map(
-      ([metric, value]) =>
-        `${metric} ${percentage(value).toFixed(2)}% < ${threshold.toFixed(2)}%`,
+      ([metric, value]) => `${metric} ${percentage(value).toFixed(2)}% < ${threshold.toFixed(2)}%`,
     );
 
   if (failures.length > 0) {
-    throw new Error(
-      `${surface} coverage threshold failed: ${failures.join(", ")}`,
-    );
+    throw new Error(`${surface} coverage threshold failed: ${failures.join(", ")}`);
   }
   return totals;
 }
@@ -81,9 +76,6 @@ export function assertCoverageThreshold(
  * @returns Aggregate function and line totals.
  * @throws {Error} When the report cannot meet the coverage floor.
  */
-export function assertCoverageFile(
-  path: string,
-  surface: string,
-): CoverageTotals {
+export function assertCoverageFile(path: string, surface: string): CoverageTotals {
   return assertCoverageThreshold(readFileSync(path, "utf8"), surface);
 }

@@ -10,5 +10,5 @@
     "target": "ES2024",
     "types": ["bun"]
   },
-  "include": ["eslint.config.ts", "scripts/**/*.ts"]
+  "include": ["vite.config.ts", "scripts/**/*.ts"]
 }

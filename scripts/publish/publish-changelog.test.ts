@@ -1,18 +1,9 @@
-import {
-  existsSync,
-  mkdirSync,
-  mkdtempSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, expect, test } from "bun:test";
 import { changelogPaths } from "../changelog/changelog-artifact";
-import {
-  publishChangelog,
-  publishChangelogPublication,
-} from "./publish-changelog";
+import { publishChangelog, publishChangelogPublication } from "./publish-changelog";
 import type { CommandRunner } from "./command-runner";
 
 const publicationEnvironment: NodeJS.ProcessEnv = {
@@ -30,9 +21,7 @@ afterEach(() => {
 });
 
 function writePublicationArtifacts(): string {
-  workspaceRoot = mkdtempSync(
-    join(tmpdir(), "cipher-wallet-changelog-publish-"),
-  );
+  workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-wallet-changelog-publish-"));
   const paths = changelogPaths(workspaceRoot);
   mkdirSync(paths.directory, { recursive: true });
   writeFileSync(paths.markdown, "# Changelog\n");
@@ -84,13 +73,8 @@ test("publishes changelog artifacts to both project-scoped destinations", async 
 });
 
 test("builds changelog artifacts before publishing them", async () => {
-  workspaceRoot = mkdtempSync(
-    join(tmpdir(), "cipher-wallet-changelog-publication-"),
-  );
-  writeFileSync(
-    join(workspaceRoot, "package.json"),
-    JSON.stringify({ version: "0.1.0-alpha.2" }),
-  );
+  workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-wallet-changelog-publication-"));
+  writeFileSync(join(workspaceRoot, "package.json"), JSON.stringify({ version: "0.1.0-alpha.2" }));
   writeFileSync(
     join(workspaceRoot, "CHANGELOG.md"),
     "## [0.1.0-alpha.2] - 2026-08-27\n\n- Published project artifacts.\n",

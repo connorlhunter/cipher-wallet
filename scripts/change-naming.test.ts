@@ -10,8 +10,6 @@ test("accepts the Cipher Wallet branch convention", (): void => {
 });
 
 test("accepts the Cipher Wallet title convention", (): void => {
-  expect(isAllowedChangeTitle("chore(contracts): add gateway contracts")).toBe(
-    true,
-  );
+  expect(isAllowedChangeTitle("chore(contracts): add gateway contracts")).toBe(true);
   expect(isAllowedChangeTitle("add gateway contracts")).toBe(false);
 });

@@ -38,14 +38,10 @@ export function parseLcov(lcov: string): CoverageFile[] {
       continue;
     }
     if (!current) continue;
-    if (line.startsWith("FNF:"))
-      current = setMetric(current, "functions", "found", value(line));
-    if (line.startsWith("FNH:"))
-      current = setMetric(current, "functions", "covered", value(line));
-    if (line.startsWith("LF:"))
-      current = setMetric(current, "lines", "found", value(line));
-    if (line.startsWith("LH:"))
-      current = setMetric(current, "lines", "covered", value(line));
+    if (line.startsWith("FNF:")) current = setMetric(current, "functions", "found", value(line));
+    if (line.startsWith("FNH:")) current = setMetric(current, "functions", "covered", value(line));
+    if (line.startsWith("LF:")) current = setMetric(current, "lines", "found", value(line));
+    if (line.startsWith("LH:")) current = setMetric(current, "lines", "covered", value(line));
     if (line === "end_of_record") {
       files.push(current);
       current = undefined;
@@ -112,14 +108,8 @@ function setMetric(
 ): CoverageFile {
   return { ...file, [metric]: { ...file[metric], [field]: value } };
 }
-function surface(
-  id: string,
-  label: string,
-  files: ReadonlyArray<CoverageFile>,
-): CoverageSurface {
-  const sorted = [...files].sort((left, right) =>
-    left.path.localeCompare(right.path),
-  );
+function surface(id: string, label: string, files: ReadonlyArray<CoverageFile>): CoverageSurface {
+  const sorted = [...files].sort((left, right) => left.path.localeCompare(right.path));
   return { files: sorted, id, label, totals: totals(sorted) };
 }
 function totals(files: ReadonlyArray<CoverageFile>): CoverageFile {
@@ -136,10 +126,7 @@ function totals(files: ReadonlyArray<CoverageFile>): CoverageFile {
     },
   );
 }
-function metricTotal(
-  left: CoverageMetric,
-  right: CoverageMetric,
-): CoverageMetric {
+function metricTotal(left: CoverageMetric, right: CoverageMetric): CoverageMetric {
   return {
     covered: left.covered + right.covered,
     found: left.found + right.found,

@@ -1,3 +1,4 @@
+import { rejects } from "node:assert/strict";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -13,10 +14,7 @@ afterEach(() => {
 
 function writeReleaseSource(version = "0.1.0-alpha.2"): string {
   workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-wallet-changelog-"));
-  writeFileSync(
-    join(workspaceRoot, "package.json"),
-    JSON.stringify({ version }),
-  );
+  writeFileSync(join(workspaceRoot, "package.json"), JSON.stringify({ version }));
   writeFileSync(
     join(workspaceRoot, "CHANGELOG.md"),
     `# Changelog\n\n## [${version}] - 2026-08-27\n\n### Added\n\n- Published project artifacts.\n\n## [0.1.0-alpha.1] - 2026-08-26\n\n- Foundation release.\n`,
@@ -26,9 +24,7 @@ function writeReleaseSource(version = "0.1.0-alpha.2"): string {
 
 test("parses canonical releases and their sections", () => {
   expect(
-    parseChangelog(
-      "## [1.2.0] - 2026-08-27\n\n### Added\n\n- First item\n\n- Second item\n",
-    ),
+    parseChangelog("## [1.2.0] - 2026-08-27\n\n### Added\n\n- First item\n\n- Second item\n"),
   ).toEqual([
     {
       date: "2026-08-27",
@@ -50,12 +46,9 @@ test("builds Markdown and PDF artifacts from the canonical changelog", async () 
 
 test("refuses a changelog whose newest release differs from package.json", async () => {
   const root = writeReleaseSource("0.1.0-alpha.2");
-  writeFileSync(
-    join(root, "CHANGELOG.md"),
-    "## [0.1.0-alpha.1] - 2026-08-26\n",
-  );
+  writeFileSync(join(root, "CHANGELOG.md"), "## [0.1.0-alpha.1] - 2026-08-26\n");
 
-  await expect(buildChangelogArtifact(root)).rejects.toThrow(
-    "CHANGELOG.md must begin with 0.1.0-alpha.2.",
-  );
+  await rejects(buildChangelogArtifact(root), {
+    message: "CHANGELOG.md must begin with 0.1.0-alpha.2.",
+  });
 });

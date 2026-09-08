@@ -39,13 +39,8 @@ function parsePinTable(value: unknown): DependencyPins {
   return Object.fromEntries(
     Object.entries(parseObject(value, "pins")).map(([name, pin]) => {
       const entry = parseObject(pin, "pins." + name);
-      if (
-        typeof entry.version !== "string" ||
-        typeof entry.reason !== "string"
-      ) {
-        throw new Error(
-          "pins." + name + " must contain string version and reason values.",
-        );
+      if (typeof entry.version !== "string" || typeof entry.reason !== "string") {
+        throw new Error("pins." + name + " must contain string version and reason values.");
       }
       return [name, { reason: entry.reason, version: entry.version }];
     }),
@@ -54,19 +49,13 @@ function parsePinTable(value: unknown): DependencyPins {
 
 function parseReleaseAgeExcludeTable(value: unknown): ReleaseAgeExcludes {
   return Object.fromEntries(
-    Object.entries(parseObject(value, "releaseAgeExcludes")).map(
-      ([name, exclude]) => {
-        const entry = parseObject(exclude, "releaseAgeExcludes." + name);
-        if (typeof entry.reason !== "string") {
-          throw new Error(
-            "releaseAgeExcludes." +
-              name +
-              " must contain a string reason value.",
-          );
-        }
-        return [name, { reason: entry.reason }];
-      },
-    ),
+    Object.entries(parseObject(value, "releaseAgeExcludes")).map(([name, exclude]) => {
+      const entry = parseObject(exclude, "releaseAgeExcludes." + name);
+      if (typeof entry.reason !== "string") {
+        throw new Error("releaseAgeExcludes." + name + " must contain a string reason value.");
+      }
+      return [name, { reason: entry.reason }];
+    }),
   );
 }
 
@@ -74,9 +63,7 @@ function parsePolicy(contents: string): DependencyPolicy {
   const parsed = parseObject(TOML.parse(contents), dependencyPolicyFile);
   return {
     pins: parsePinTable(parsed.pins ?? {}),
-    releaseAgeExcludes: parseReleaseAgeExcludeTable(
-      parsed.releaseAgeExcludes ?? {},
-    ),
+    releaseAgeExcludes: parseReleaseAgeExcludeTable(parsed.releaseAgeExcludes ?? {}),
   };
 }
 
@@ -97,10 +84,7 @@ function parsePackageJson(contents: string): PackageJson {
  * @returns Formatted package.json contents with matching overrides.
  * @throws {Error} When packageJson is invalid JSON.
  */
-export function applyPinnedOverrides(
-  packageJson: string,
-  pins: DependencyPins,
-): string {
+export function applyPinnedOverrides(packageJson: string, pins: DependencyPins): string {
   const parsed = parsePackageJson(packageJson);
   const entries = Object.entries(pins)
     .sort(([left], [right]) => left.localeCompare(right))
@@ -122,26 +106,14 @@ export function applyPinnedOverrides(
  * @param excludes Package names approved to bypass the release-age delay.
  * @returns bunfig.toml contents with matching exclusions.
  */
-export function applyReleaseAgeExcludes(
-  bunfig: string,
-  excludes: string[],
-): string {
-  const withoutExistingExcludes = bunfig.replace(
-    /^minimumReleaseAgeExcludes\s*=.*\n?/mu,
-    "",
-  );
-  const sortedExcludes = [...excludes].sort((left, right) =>
-    left.localeCompare(right),
-  );
+export function applyReleaseAgeExcludes(bunfig: string, excludes: string[]): string {
+  const withoutExistingExcludes = bunfig.replace(/^minimumReleaseAgeExcludes\s*=.*\n?/mu, "");
+  const sortedExcludes = [...excludes].sort((left, right) => left.localeCompare(right));
   if (sortedExcludes.length === 0) return withoutExistingExcludes;
 
-  const excludesLine =
-    "minimumReleaseAgeExcludes = " + JSON.stringify(sortedExcludes) + "\n";
+  const excludesLine = "minimumReleaseAgeExcludes = " + JSON.stringify(sortedExcludes) + "\n";
   if (/^minimumReleaseAge\s*=.*$/mu.test(withoutExistingExcludes)) {
-    return withoutExistingExcludes.replace(
-      /^(minimumReleaseAge\s*=.*\n)/mu,
-      "$1" + excludesLine,
-    );
+    return withoutExistingExcludes.replace(/^(minimumReleaseAge\s*=.*\n)/mu, "$1" + excludesLine);
   }
 
   return withoutExistingExcludes.trimEnd() + "\n" + excludesLine;
@@ -159,22 +131,15 @@ export interface SyncDependencyPolicyOptions {
  * @returns `true` when sync mode changed configuration files.
  * @throws {Error} When the policy is invalid or check-only mode finds drift.
  */
-export function syncDependencyPolicy(
-  options: SyncDependencyPolicyOptions = {},
-): boolean {
+export function syncDependencyPolicy(options: SyncDependencyPolicyOptions = {}): boolean {
   const root = options.root ?? process.cwd();
-  const policy = parsePolicy(
-    readFileSync(join(root, dependencyPolicyFile), "utf8"),
-  );
+  const policy = parsePolicy(readFileSync(join(root, dependencyPolicyFile), "utf8"));
   const packageJsonPath = join(root, packageJsonFile);
   const bunfigPath = join(root, bunfigFile);
   const packageJson = readFileSync(packageJsonPath, "utf8");
   const bunfig = readFileSync(bunfigPath, "utf8");
   const nextPackageJson = applyPinnedOverrides(packageJson, policy.pins);
-  const nextBunfig = applyReleaseAgeExcludes(
-    bunfig,
-    Object.keys(policy.releaseAgeExcludes),
-  );
+  const nextBunfig = applyReleaseAgeExcludes(bunfig, Object.keys(policy.releaseAgeExcludes));
   const changedPaths: string[] = [];
 
   if (nextPackageJson !== packageJson) changedPaths.push(packageJsonFile);
@@ -190,8 +155,7 @@ export function syncDependencyPolicy(
     return false;
   }
 
-  if (nextPackageJson !== packageJson)
-    writeFileSync(packageJsonPath, nextPackageJson);
+  if (nextPackageJson !== packageJson) writeFileSync(packageJsonPath, nextPackageJson);
   if (nextBunfig !== bunfig) writeFileSync(bunfigPath, nextBunfig);
   return changedPaths.length > 0;
 }
@@ -201,16 +165,9 @@ if (import.meta.main) {
     const changed = syncDependencyPolicy({
       checkOnly: process.argv.includes("--check"),
     });
-    console.log(
-      changed
-        ? "Synced dependency policy."
-        : "Dependency policy already in sync.",
-    );
+    console.log(changed ? "Synced dependency policy." : "Dependency policy already in sync.");
   } catch (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : "Unknown dependency policy failure.";
+    const message = error instanceof Error ? error.message : "Unknown dependency policy failure.";
     console.error("Dependency policy check failed: " + message);
     process.exitCode = 1;
   }

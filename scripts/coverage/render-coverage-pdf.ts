@@ -1,23 +1,14 @@
-import {
-  createWriteStream,
-  existsSync,
-  mkdirSync,
-  readFileSync,
-} from "node:fs";
+import { createWriteStream, existsSync, mkdirSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import PDFDocument from "pdfkit";
 import { coveragePaths } from "./coverage-paths";
-import type {
-  CoverageArtifact,
-  CoverageMetric,
-} from "./render-coverage-report";
+import type { CoverageArtifact, CoverageMetric } from "./render-coverage-report";
 
 export interface RenderedCoveragePdfs {
   readonly overview: string;
 }
 function metricText(metric: CoverageMetric): string {
-  const percentage =
-    metric.found === 0 ? 100 : (metric.covered / metric.found) * 100;
+  const percentage = metric.found === 0 ? 100 : (metric.covered / metric.found) * 100;
   return `${percentage.toFixed(2)}% (${metric.covered}/${metric.found})`;
 }
 
@@ -26,11 +17,8 @@ export async function renderCoveragePdfs(
   workspaceRoot = process.cwd(),
 ): Promise<RenderedCoveragePdfs> {
   const paths = coveragePaths(workspaceRoot);
-  if (!existsSync(paths.json))
-    throw new Error(`Missing coverage artifact: ${paths.json}.`);
-  const coverage = JSON.parse(
-    readFileSync(paths.json, "utf8"),
-  ) as CoverageArtifact;
+  if (!existsSync(paths.json)) throw new Error(`Missing coverage artifact: ${paths.json}.`);
+  const coverage = JSON.parse(readFileSync(paths.json, "utf8")) as CoverageArtifact;
   mkdirSync(dirname(paths.pdf), { recursive: true });
   await new Promise<void>((resolve, reject) => {
     const document = new PDFDocument({
@@ -52,9 +40,7 @@ export async function renderCoveragePdfs(
       .font("Helvetica")
       .fontSize(10)
       .fillColor("#667085")
-      .text(
-        `Updated ${coverage.updatedAt}. Required minimum: ${coverage.minimumCoverage}%.`,
-      );
+      .text(`Updated ${coverage.updatedAt}. Required minimum: ${coverage.minimumCoverage}%.`);
     for (const surface of coverage.surfaces) {
       document
         .moveDown(0.9)

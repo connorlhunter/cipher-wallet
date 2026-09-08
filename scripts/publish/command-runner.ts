@@ -20,18 +20,12 @@ export const defaultCommandRunner: CommandRunner = (command, args, subject) =>
     child.stderr.on("data", (chunk: Buffer) => {
       stderr += chunk.toString();
     });
-    child.on("error", (error: Error) =>
-      reject(new Error(`${subject} failed: ${error.message}`)),
-    );
+    child.on("error", (error: Error) => reject(new Error(`${subject} failed: ${error.message}`)));
     child.on("close", (code: number | null) => {
       if (code === 0) return resolve();
       reject(
         new Error(
-          [
-            `${subject} failed with exit code ${code ?? "unknown"}.`,
-            stdout.trim(),
-            stderr.trim(),
-          ]
+          [`${subject} failed with exit code ${code ?? "unknown"}.`, stdout.trim(), stderr.trim()]
             .filter(Boolean)
             .join("\n"),
         ),

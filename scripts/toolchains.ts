@@ -33,9 +33,7 @@ const packageManifest = JSON.parse(
  * Bun and CodeQL are exact pins. Python is a supported minimum version.
  */
 export const requiredToolchains = Object.freeze({
-  bun: bunVersion(
-    requiredString(packageManifest.packageManager, "packageManager"),
-  ),
+  bun: bunVersion(requiredString(packageManifest.packageManager, "packageManager")),
   codeql: requiredString(packageManifest.toolchain?.codeql, "toolchain.codeql"),
   python: "3.12",
 });

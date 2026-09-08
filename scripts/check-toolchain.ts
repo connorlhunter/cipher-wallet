@@ -8,19 +8,14 @@ import { requiredToolchains } from "./toolchains.ts";
  * @returns The trimmed version output.
  * @throws {Error} When the executable cannot run successfully.
  */
-function commandVersion(
-  command: string,
-  arguments_: readonly string[],
-): string {
+function commandVersion(command: string, arguments_: readonly string[]): string {
   const result = Bun.spawnSync([command, ...arguments_], {
     stderr: "pipe",
     stdout: "pipe",
   });
 
   if (result.exitCode !== 0) {
-    throw new Error(
-      command + " is required. Install the documented toolchain and try again.",
-    );
+    throw new Error(command + " is required. Install the documented toolchain and try again.");
   }
 
   return new TextDecoder().decode(result.stdout).trim();
@@ -33,9 +28,7 @@ function commandVersion(
  * @throws {Error} When the installed Python version is unsupported.
  */
 function assertPythonVersion(versionOutput: string): void {
-  const match = /^Python (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$/u.exec(
-    versionOutput,
-  );
+  const match = /^Python (?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)$/u.exec(versionOutput);
   const major = Number(match?.groups?.major);
   const minor = Number(match?.groups?.minor);
 
@@ -52,11 +45,7 @@ function assertPythonVersion(versionOutput: string): void {
 
 if (!Bun.semver.satisfies(Bun.version, requiredToolchains.bun)) {
   throw new Error(
-    "Cipher Wallet requires Bun " +
-      requiredToolchains.bun +
-      "; found " +
-      Bun.version +
-      ".",
+    "Cipher Wallet requires Bun " + requiredToolchains.bun + "; found " + Bun.version + ".",
   );
 }
 

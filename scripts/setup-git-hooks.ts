@@ -10,13 +10,10 @@ export function setupGitHooks(): void {
   });
 
   if (repository.exitCode === 0) {
-    const configured = Bun.spawnSync(
-      ["git", "config", "core.hooksPath", ".githooks"],
-      {
-        stderr: "inherit",
-        stdout: "inherit",
-      },
-    );
+    const configured = Bun.spawnSync(["git", "config", "core.hooksPath", ".githooks"], {
+      stderr: "inherit",
+      stdout: "inherit",
+    });
 
     if (configured.exitCode !== 0) {
       throw new Error("Failed to configure the repository Git hooks.");
