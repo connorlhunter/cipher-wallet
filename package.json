@@ -57,7 +57,7 @@
     "pdfkit": "^0.20.2",
     "react-doctor": "0.9.12",
     "typescript": "^6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.3.0",
     "vite-plus": "0.3.0"
   }
 }
