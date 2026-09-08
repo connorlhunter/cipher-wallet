@@ -43,6 +43,7 @@ jobs:
       - run: bun run format:check
       - run: bun run lint:ts
       - run: bun run typecheck:ts
+      - run: bun run doctor
       - name: Test project scripts
         run: bun run test:scripts
       - name: Build browser client
