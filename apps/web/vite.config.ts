@@ -1,7 +1,7 @@
 import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
+import { defineConfig, lazyPlugins } from "vite-plus";
 
-/** Build the Cipher Wallet browser client. */
+/** Build the Cipher Wallet client as a browser-only single-page application. */
 export default defineConfig({
-  plugins: [react()],
+  plugins: lazyPlugins(() => [react()]) ?? [],
 });

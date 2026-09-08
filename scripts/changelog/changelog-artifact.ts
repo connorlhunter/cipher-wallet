@@ -1,10 +1,4 @@
-import {
-  createWriteStream,
-  mkdirSync,
-  readFileSync,
-  rmSync,
-  writeFileSync,
-} from "node:fs";
+import { createWriteStream, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import PDFDocument from "pdfkit";
 
@@ -41,8 +35,7 @@ export function parseChangelog(markdown: string): ChangelogRelease[] {
     sections: ChangelogSection[];
     version: string;
   }> = [];
-  let release:
-    { date: string; sections: ChangelogSection[]; version: string } | undefined;
+  let release: { date: string; sections: ChangelogSection[]; version: string } | undefined;
   let section: { entries: string[]; title: string } | undefined;
   for (const line of markdown.split(/\r?\n/u)) {
     const match = releaseHeading.exec(line);
@@ -69,8 +62,7 @@ export function parseChangelog(markdown: string): ChangelogRelease[] {
       target.entries.push(entry[1] ?? "");
     }
   }
-  if (releases.length === 0)
-    throw new Error("CHANGELOG.md does not contain a release heading.");
+  if (releases.length === 0) throw new Error("CHANGELOG.md does not contain a release heading.");
   return releases;
 }
 /** Builds Markdown and PDF changelog artifacts from this repository's source changelog. */
@@ -79,9 +71,9 @@ export async function buildChangelogArtifact(
   publishedAt = new Date().toISOString(),
 ): Promise<ChangelogPaths> {
   const paths = changelogPaths(workspaceRoot);
-  const packageJson = JSON.parse(
-    readFileSync(join(workspaceRoot, "package.json"), "utf8"),
-  ) as { version: string };
+  const packageJson = JSON.parse(readFileSync(join(workspaceRoot, "package.json"), "utf8")) as {
+    version: string;
+  };
   const markdown = readFileSync(join(workspaceRoot, "CHANGELOG.md"), "utf8");
   const releases = parseChangelog(markdown);
   if (releases[0]?.version !== packageJson.version)
@@ -132,11 +124,7 @@ export async function buildChangelogArtifact(
           .fillColor("#17202a")
           .text(section.title);
         for (const entry of section.entries)
-          document
-            .moveDown(0.2)
-            .font("Helvetica")
-            .fontSize(10)
-            .text(`• ${entry}`);
+          document.moveDown(0.2).font("Helvetica").fontSize(10).text(`• ${entry}`);
       }
     }
     document.end();

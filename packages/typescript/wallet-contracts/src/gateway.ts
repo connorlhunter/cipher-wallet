@@ -48,15 +48,11 @@ export const signedTransactionBroadcastSchema = z
 /** A valid public gateway network. */
 export type ChainNetwork = z.infer<typeof chainNetworkSchema>;
 /** A valid Litecoin Testnet address. */
-export type LitecoinTestnetAddress = z.infer<
-  typeof litecoinTestnetAddressSchema
->;
+export type LitecoinTestnetAddress = z.infer<typeof litecoinTestnetAddressSchema>;
 /** A public address request. */
 export type AddressRequest = z.infer<typeof addressRequestSchema>;
 /** A signed transaction broadcast request. */
-export type SignedTransactionBroadcast = z.infer<
-  typeof signedTransactionBroadcastSchema
->;
+export type SignedTransactionBroadcast = z.infer<typeof signedTransactionBroadcastSchema>;
 
 /**
  * Find recovery or private-key fields in a nested gateway payload.
@@ -65,10 +61,7 @@ export type SignedTransactionBroadcast = z.infer<
  * @param path Current nested field path.
  * @returns Secret-like field paths in traversal order.
  */
-export function findProhibitedFieldPaths(
-  payload: unknown,
-  path = "",
-): string[] {
+export function findProhibitedFieldPaths(payload: unknown, path = ""): string[] {
   if (Array.isArray(payload)) {
     return payload.flatMap((value, index): string[] =>
       findProhibitedFieldPaths(value, path + "[" + String(index) + "]"),
@@ -99,9 +92,7 @@ export function assertNoWalletSecrets(payload: unknown): void {
   const prohibitedPaths = findProhibitedFieldPaths(payload);
 
   if (prohibitedPaths.length > 0) {
-    throw new Error(
-      "Gateway payload contains wallet secrets: " + prohibitedPaths.join(", "),
-    );
+    throw new Error("Gateway payload contains wallet secrets: " + prohibitedPaths.join(", "));
   }
 }
 
@@ -122,9 +113,7 @@ export function parseAddressRequest(payload: unknown): AddressRequest {
  * @param payload Untrusted request value.
  * @returns A validated signed transaction request.
  */
-export function parseSignedTransactionBroadcast(
-  payload: unknown,
-): SignedTransactionBroadcast {
+export function parseSignedTransactionBroadcast(payload: unknown): SignedTransactionBroadcast {
   assertNoWalletSecrets(payload);
   return signedTransactionBroadcastSchema.parse(payload);
 }

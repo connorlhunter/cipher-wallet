@@ -11,9 +11,7 @@ function runCommand(command: string, arguments_: readonly string[]): void {
   });
 
   if (result.exitCode !== 0) {
-    throw new Error(
-      "Failed to run " + command + " " + arguments_.join(" ") + ".",
-    );
+    throw new Error("Failed to run " + command + " " + arguments_.join(" ") + ".");
   }
 }
 

@@ -26,15 +26,11 @@ function validBroadcastRequest(): SignedTransactionBroadcast {
 }
 
 test("parses a public Testnet address request", (): void => {
-  expect(parseAddressRequest(validAddressRequest()).network).toBe(
-    "litecoin-testnet",
-  );
+  expect(parseAddressRequest(validAddressRequest()).network).toBe("litecoin-testnet");
 });
 
 test("parses a signed Testnet broadcast request", (): void => {
-  expect(
-    parseSignedTransactionBroadcast(validBroadcastRequest()).raw_transaction,
-  ).toBe("00aaff");
+  expect(parseSignedTransactionBroadcast(validBroadcastRequest()).raw_transaction).toBe("00aaff");
 });
 
 test("rejects wallet secret fields before parsing", (): void => {
@@ -56,12 +52,8 @@ test("rejects wallet secret fields in arrays", (): void => {
     attempts: [{ address: "public" }, { " Private-Key ": "not allowed" }],
   };
 
-  expect(findProhibitedFieldPaths(payload)).toEqual([
-    "attempts[1]. Private-Key ",
-  ]);
-  expect((): void => assertNoWalletSecrets(payload)).toThrow(
-    "attempts[1]. Private-Key ",
-  );
+  expect(findProhibitedFieldPaths(payload)).toEqual(["attempts[1]. Private-Key "]);
+  expect((): void => assertNoWalletSecrets(payload)).toThrow("attempts[1]. Private-Key ");
 });
 
 test("rejects non-hex signed transaction data", (): void => {

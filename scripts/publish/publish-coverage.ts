@@ -45,12 +45,7 @@ export function coveragePublishDestinations(
       source,
       target: s3Uri(
         envValue(env.SOURCE_ARTIFACTS_BUCKET),
-        keyPath(
-          envValue(env.SOURCE_ARTIFACTS_PREFIX),
-          "projects",
-          projectSlug,
-          "coverage",
-        ),
+        keyPath(envValue(env.SOURCE_ARTIFACTS_PREFIX), "projects", projectSlug, "coverage"),
       ),
     });
   if (envValue(env.ARTIFACTS_BUCKET))
@@ -59,12 +54,7 @@ export function coveragePublishDestinations(
       source,
       target: s3Uri(
         envValue(env.ARTIFACTS_BUCKET),
-        keyPath(
-          envValue(env.ARTIFACTS_PREFIX),
-          "projects",
-          projectSlug,
-          "coverage",
-        ),
+        keyPath(envValue(env.ARTIFACTS_PREFIX), "projects", projectSlug, "coverage"),
       ),
     });
   if (destinations.length === 0)
@@ -75,20 +65,13 @@ export function coveragePublishDestinations(
 }
 
 /** Uploads JSON/PDF coverage output and invalidates the project artifact path. */
-export async function publishCoverage(
-  options: PublishCoverageOptions = {},
-): Promise<void> {
+export async function publishCoverage(options: PublishCoverageOptions = {}): Promise<void> {
   const paths = coveragePaths(options.workspaceRoot);
   if (!existsSync(paths.json) || !existsSync(paths.pdf))
-    throw new Error(
-      `Missing coverage artifacts: ${paths.json} or ${paths.pdf}.`,
-    );
+    throw new Error(`Missing coverage artifacts: ${paths.json} or ${paths.pdf}.`);
   const env = options.env ?? process.env;
   const runner = options.commandRunner ?? defaultCommandRunner;
-  for (const destination of coveragePublishDestinations(
-    env,
-    options.workspaceRoot,
-  ))
+  for (const destination of coveragePublishDestinations(env, options.workspaceRoot))
     await runner(
       "aws",
       ["s3", "sync", destination.source, destination.target, "--delete"],

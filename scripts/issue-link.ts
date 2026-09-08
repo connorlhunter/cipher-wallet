@@ -22,9 +22,7 @@ export function hasLinkedIssue(pullRequestBody: string): boolean {
  * @param pullRequestAuthor GitHub login from the pull request event.
  * @returns `true` for Dependabot's expected login.
  */
-export function isDependabotPullRequest(
-  pullRequestAuthor: string | undefined,
-): boolean {
+export function isDependabotPullRequest(pullRequestAuthor: string | undefined): boolean {
   return pullRequestAuthor === dependabotLogin;
 }
 
@@ -54,9 +52,7 @@ export async function runIssueLinkCheck(
   environment: Environment,
 ): Promise<void> {
   if (arguments_.length === 1 && arguments_[0] === "--pull-request-body") {
-    if (
-      isDependabotPullRequest(environment.CIPHER_WALLET_PULL_REQUEST_AUTHOR)
-    ) {
+    if (isDependabotPullRequest(environment.CIPHER_WALLET_PULL_REQUEST_AUTHOR)) {
       return;
     }
 

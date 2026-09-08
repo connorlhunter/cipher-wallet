@@ -2,10 +2,7 @@ import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, expect, test } from "bun:test";
-import {
-  checkReleaseVersion,
-  pythonReleaseVersion,
-} from "./check-release-version";
+import { checkReleaseVersion, pythonReleaseVersion } from "./check-release-version";
 
 let workspaceRoot = "";
 
@@ -14,10 +11,7 @@ afterEach(() => {
   workspaceRoot = "";
 });
 
-function writeReleaseFiles(
-  version: string,
-  changelogVersion = version,
-): string {
+function writeReleaseFiles(version: string, changelogVersion = version): string {
   workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-wallet-release-"));
   mkdirSync(join(workspaceRoot, "apps/web"), { recursive: true });
   mkdirSync(join(workspaceRoot, "packages/typescript/wallet-contracts"), {
@@ -32,14 +26,8 @@ function writeReleaseFiles(
     "packages/typescript/wallet-contracts/package.json",
   ])
     writeFileSync(join(workspaceRoot, manifest), JSON.stringify({ version }));
-  for (const manifest of [
-    "pyproject.toml",
-    "packages/python/cipher-wallet-core/pyproject.toml",
-  ])
-    writeFileSync(
-      join(workspaceRoot, manifest),
-      `version = "${pythonReleaseVersion(version)}"\n`,
-    );
+  for (const manifest of ["pyproject.toml", "packages/python/cipher-wallet-core/pyproject.toml"])
+    writeFileSync(join(workspaceRoot, manifest), `version = "${pythonReleaseVersion(version)}"\n`);
   writeFileSync(
     join(workspaceRoot, "CHANGELOG.md"),
     `# Changelog\n\n## [${changelogVersion}] - 2026-08-27\n`,
@@ -48,9 +36,7 @@ function writeReleaseFiles(
 }
 
 test("requires every shipped version declaration to match", () => {
-  expect(() =>
-    checkReleaseVersion(writeReleaseFiles("0.1.0-alpha.2")),
-  ).not.toThrow();
+  expect(() => checkReleaseVersion(writeReleaseFiles("0.1.0-alpha.2"))).not.toThrow();
   writeFileSync(
     join(workspaceRoot, "apps/web/package.json"),
     JSON.stringify({ version: "0.1.0-alpha.1" }),

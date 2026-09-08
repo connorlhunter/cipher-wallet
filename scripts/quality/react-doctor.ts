@@ -6,24 +6,13 @@ const environment = { ...process.env };
 
 // Git hooks pin commands to the repository root. Let Git rediscover the worktree
 // when React Doctor enumerates files from the nested browser application.
-for (const name of [
-  "GIT_DIR",
-  "GIT_WORK_TREE",
-  "GIT_COMMON_DIR",
-  "GIT_PREFIX",
-]) {
+for (const name of ["GIT_DIR", "GIT_WORK_TREE", "GIT_COMMON_DIR", "GIT_PREFIX"]) {
   delete environment[name];
 }
 
 const result = spawnSync(
   "react-doctor",
-  [
-    "apps/web",
-    "--yes",
-    "--no-telemetry",
-    "--no-supply-chain",
-    ...process.argv.slice(2),
-  ],
+  ["apps/web", "--yes", "--no-telemetry", "--no-supply-chain", ...process.argv.slice(2)],
   { cwd: repositoryRoot, env: environment, stdio: "inherit" },
 );
 

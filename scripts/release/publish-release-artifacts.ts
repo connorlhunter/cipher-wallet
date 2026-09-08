@@ -1,26 +1,15 @@
 import { buildChangelogArtifact } from "../changelog/changelog-artifact";
 import { prepareCoveragePublication } from "../coverage/prepare-coverage-publication";
-import {
-  publishChangelog,
-  type PublishChangelogOptions,
-} from "../publish/publish-changelog";
-import {
-  publishCoverage,
-  type PublishCoverageOptions,
-} from "../publish/publish-coverage";
-import {
-  defaultCommandRunner,
-  type CommandRunner,
-} from "../publish/command-runner";
+import { publishChangelog, type PublishChangelogOptions } from "../publish/publish-changelog";
+import { publishCoverage, type PublishCoverageOptions } from "../publish/publish-coverage";
+import { defaultCommandRunner, type CommandRunner } from "../publish/command-runner";
 import { checkReleaseVersion } from "./check-release-version";
 
 export interface ReleasePublicationDependencies {
   readonly buildChangelogArtifact: typeof buildChangelogArtifact;
   readonly checkReleaseVersion: typeof checkReleaseVersion;
   readonly prepareCoveragePublication: typeof prepareCoveragePublication;
-  readonly publishChangelog: (
-    options: PublishChangelogOptions,
-  ) => Promise<void>;
+  readonly publishChangelog: (options: PublishChangelogOptions) => Promise<void>;
   readonly publishCoverage: (options: PublishCoverageOptions) => Promise<void>;
 }
 

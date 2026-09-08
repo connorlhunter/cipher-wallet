@@ -4,9 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "tsgo --build && vite build",
-    "dev": "vite",
-    "preview": "vite preview"
+    "build": "vp build",
+    "dev": "vp dev",
+    "preview": "vp preview"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.170.31",
@@ -17,6 +17,6 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@vitejs/plugin-react": "^6.0.5",
-    "vite": "^8.2.1"
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.9"
   }
 }

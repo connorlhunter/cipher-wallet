@@ -4,10 +4,7 @@ const coreNumber = "(?:0|[1-9]\\d*)";
 const prereleasePart = "(?:0|[1-9]\\d*|\\d*[A-Za-z-][0-9A-Za-z-]*)";
 const buildPart = "[0-9A-Za-z-]+";
 
-const branchPattern = new RegExp(
-  "^" + changeTypes + "/" + kebabName + "$",
-  "u",
-);
+const branchPattern = new RegExp("^" + changeTypes + "/" + kebabName + "$", "u");
 const releasePattern = new RegExp(
   "^release/" +
     coreNumber +
@@ -73,9 +70,7 @@ export function currentBranchName(
       stderr: "inherit",
       stdout: "pipe",
     });
-    return result.exitCode === 0
-      ? new TextDecoder().decode(result.stdout).trim()
-      : "";
+    return result.exitCode === 0 ? new TextDecoder().decode(result.stdout).trim() : "";
   },
 ): string {
   return (
@@ -111,11 +106,7 @@ export function assertAllowedBranchName(branchName: string): void {
 export function assertAllowedChangeTitle(title: string, label: string): void {
   if (!isAllowedChangeTitle(title)) {
     throw new Error(
-      "Invalid " +
-        label +
-        ' "' +
-        title +
-        '". Use <type>[(scope)][!]: <imperative summary>.',
+      "Invalid " + label + ' "' + title + '". Use <type>[(scope)][!]: <imperative summary>.',
     );
   }
 }

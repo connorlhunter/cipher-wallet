@@ -3,10 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, expect, test } from "bun:test";
 import { coveragePaths } from "../coverage/coverage-paths";
-import {
-  coveragePublishDestinations,
-  publishCoverage,
-} from "./publish-coverage";
+import { coveragePublishDestinations, publishCoverage } from "./publish-coverage";
 import type { CommandRunner } from "./command-runner";
 
 const publicationEnvironment: NodeJS.ProcessEnv = {
@@ -30,12 +27,7 @@ function recordingRunner(calls: string[][]): CommandRunner {
 }
 
 test("builds project-scoped coverage destinations", () => {
-  expect(
-    coveragePublishDestinations(
-      publicationEnvironment,
-      "/workspace/cipher-wallet",
-    ),
-  ).toEqual([
+  expect(coveragePublishDestinations(publicationEnvironment, "/workspace/cipher-wallet")).toEqual([
     {
       label: "Source coverage copy",
       source: join("/workspace/cipher-wallet", "coverage"),
@@ -50,9 +42,7 @@ test("builds project-scoped coverage destinations", () => {
 });
 
 test("publishes the JSON/PDF coverage pair and invalidates the project path", async () => {
-  workspaceRoot = mkdtempSync(
-    join(tmpdir(), "cipher-wallet-coverage-publish-"),
-  );
+  workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-wallet-coverage-publish-"));
   const paths = coveragePaths(workspaceRoot);
   mkdirSync(paths.directory, { recursive: true });
   writeFileSync(paths.json, "{}\n");

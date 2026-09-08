@@ -25,17 +25,8 @@ test("calculates line and function totals from LCOV", (): void => {
 test("reports the surface and failing metrics", (): void => {
   expect((): void => {
     assertCoverageThreshold(
-      [
-        "SF:src/example.py",
-        "FNF:20",
-        "FNH:18",
-        "LF:100",
-        "LH:94",
-        "end_of_record",
-      ].join("\n"),
+      ["SF:src/example.py", "FNF:20", "FNH:18", "LF:100", "LH:94", "end_of_record"].join("\n"),
       "Python",
     );
-  }).toThrow(
-    "Python coverage threshold failed: functions 90.00% < 95.00%, lines 94.00% < 95.00%",
-  );
+  }).toThrow("Python coverage threshold failed: functions 90.00% < 95.00%, lines 94.00% < 95.00%");
 });

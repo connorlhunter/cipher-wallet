@@ -1,9 +1,6 @@
 import { coveragePaths } from "./coverage-paths";
 import { renderCoveragePdfs } from "./render-coverage-pdf";
-import {
-  coverageUpdatedAt,
-  renderCoverageReport,
-} from "./render-coverage-report";
+import { coverageUpdatedAt, renderCoverageReport } from "./render-coverage-report";
 
 export interface PreparedCoveragePublication {
   readonly json: string;

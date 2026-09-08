@@ -42,8 +42,7 @@ describe("dependency policy sync", () => {
   });
 
   test("adds, sorts, and removes reviewed release-age exceptions", () => {
-    const bunfig =
-      '[install]\nminimumReleaseAge = 604800\n\n[test]\ncoverageDir = "coverage"\n';
+    const bunfig = '[install]\nminimumReleaseAge = 604800\n\n[test]\ncoverageDir = "coverage"\n';
 
     expect(applyReleaseAgeExcludes(bunfig, ["ws", "mermaid"])).toBe(
       '[install]\nminimumReleaseAge = 604800\nminimumReleaseAgeExcludes = ["mermaid","ws"]\n\n[test]\ncoverageDir = "coverage"\n',
@@ -57,19 +56,14 @@ describe("dependency policy sync", () => {
   });
 
   test("checks and synchronizes the policy files in an isolated repository", () => {
-    const root = mkdtempSync(
-      join(tmpdir(), "cipher-wallet-dependency-policy-"),
-    );
+    const root = mkdtempSync(join(tmpdir(), "cipher-wallet-dependency-policy-"));
 
     try {
       writeFileSync(
         root + "/package.json",
         JSON.stringify({ name: "cipher-wallet" }, null, 2) + "\n",
       );
-      writeFileSync(
-        root + "/bunfig.toml",
-        "[install]\nminimumReleaseAge = 604800\n",
-      );
+      writeFileSync(root + "/bunfig.toml", "[install]\nminimumReleaseAge = 604800\n");
       writeFileSync(
         root + "/dependency-policy.toml",
         `[pins.ws]
@@ -86,9 +80,7 @@ reason = "Allow a reviewed fix before the seven-day release-age window."
       );
       expect(syncDependencyPolicy({ root })).toBe(true);
       expect(syncDependencyPolicy({ checkOnly: true, root })).toBe(false);
-      expect(
-        JSON.parse(readFileSync(root + "/package.json", "utf8")),
-      ).toMatchObject({
+      expect(JSON.parse(readFileSync(root + "/package.json", "utf8"))).toMatchObject({
         overrides: { ws: "8.21.0" },
       });
       expect(readFileSync(root + "/bunfig.toml", "utf8")).toContain(
