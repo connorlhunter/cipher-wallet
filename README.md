@@ -80,3 +80,5 @@ Never commit recovery phrases, private keys, WIF values, wallet backups, credent
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+React Doctor runs during `bun run verify` and in GitHub CI. Use `bun run doctor` for a standalone scan or `bun run doctor -- --verbose` for every finding. The pinned CLI scans the full React project, blocks errors, and reports warnings. The wrapper clears Git directory overrides inherited from hooks so the CLI resolves paths correctly inside `apps/web`. Generated files are excluded in `doctor.config.json`; telemetry, remote scoring, and Socket.dev checks are disabled. Dependency auditing remains in `bun run audit`.

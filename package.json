@@ -46,7 +46,8 @@
     "version:check": "bun scripts/release/check-release-version.ts",
     "release:publish": "bun scripts/release/publish-release-artifacts.ts",
     "verify": "bun run verify:ts && bun run audit && bun run codeql:scan && uv run ruff check . && uv run mypy && bun run coverage:python",
-    "verify:ts": "bun run naming:check && bun run version:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run test:scripts && bun run build:web && bun run coverage:typescript"
+    "verify:ts": "bun run naming:check && bun run version:check && bun run toolchain:check && bun run format:check && bun run lint:ts && bun run typecheck:ts && bun run doctor && bun run test:scripts && bun run build:web && bun run coverage:typescript",
+    "doctor": "bun scripts/quality/react-doctor.ts"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -59,6 +60,7 @@
     "jiti": "^2.6.1",
     "pdfkit": "^0.19.1",
     "prettier": "^3.9.6",
+    "react-doctor": "0.9.12",
     "typescript": "^6.0.3",
     "typescript-eslint": "^8.67.0"
   }
