@@ -10,6 +10,7 @@ const pythonManifests = [
   "pyproject.toml",
   "packages/python/cipher-wallet-core/pyproject.toml",
 ] as const;
+const apiManifest = "apps/api/app/main.py";
 const releaseHeading = /^##\s+\[?([^\]\s]+)\]?\s+-\s+\d{4}-\d{2}-\d{2}\s*$/mu;
 
 /** Requires every shipped version declaration to match the changelog release. */
@@ -24,6 +25,7 @@ export function checkReleaseVersion(workspaceRoot = process.cwd()): void {
   const pythonVersion = pythonReleaseVersion(version);
   for (const manifest of pythonManifests)
     assertVersion(manifest, assignedVersion(join(workspaceRoot, manifest)), pythonVersion);
+  assertVersion(apiManifest, apiVersion(join(workspaceRoot, apiManifest)), pythonVersion);
 }
 
 /** Converts the repository's npm release format to its Python counterpart. */
@@ -47,6 +49,12 @@ function packageVersion(path: string): string {
 
 function assignedVersion(path: string): string {
   const version = /^version\s*=\s*"([^"]+)"\s*$/mu.exec(readFileSync(path, "utf8"))?.[1];
+  if (!version) throw new Error(`${path} must contain a release version.`);
+  return version;
+}
+
+function apiVersion(path: string): string {
+  const version = /version\s*=\s*"([^"]+)"/u.exec(readFileSync(path, "utf8"))?.[1];
   if (!version) throw new Error(`${path} must contain a release version.`);
   return version;
 }
