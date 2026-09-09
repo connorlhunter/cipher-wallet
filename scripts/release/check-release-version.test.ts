@@ -14,6 +14,11 @@ afterEach(() => {
 function writeReleaseFiles(version: string, changelogVersion = version): string {
   workspaceRoot = mkdtempSync(join(tmpdir(), "cipher-wallet-release-"));
   mkdirSync(join(workspaceRoot, "apps/web"), { recursive: true });
+  mkdirSync(join(workspaceRoot, "apps/api/app"), { recursive: true });
+  writeFileSync(
+    join(workspaceRoot, "apps/api/app/main.py"),
+    `app = FastAPI(version="${pythonReleaseVersion(version)}")\n`,
+  );
   mkdirSync(join(workspaceRoot, "packages/typescript/wallet-contracts"), {
     recursive: true,
   });
@@ -50,4 +55,12 @@ test("maps npm prereleases to Python releases", () => {
   expect(pythonReleaseVersion("1.2.3-alpha.4")).toBe("1.2.3a4");
   expect(pythonReleaseVersion("1.2.3-beta.4")).toBe("1.2.3b4");
   expect(pythonReleaseVersion("1.2.3-rc.4")).toBe("1.2.3rc4");
+});
+
+test("rejects an API version that trails the release", () => {
+  writeReleaseFiles("0.1.0-alpha.3");
+  writeFileSync(join(workspaceRoot, "apps/api/app/main.py"), 'app = FastAPI(version="0.1.0a1")\n');
+  expect(() => checkReleaseVersion(workspaceRoot)).toThrow(
+    "apps/api/app/main.py must use release version 0.1.0a3.",
+  );
 });

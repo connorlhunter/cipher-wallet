@@ -8,6 +8,10 @@
 - Use Vite+ for browser builds, formatting, linting, and TypeScript checks.
 - Keep the Vite core alias aligned with Vite+ and update frontend dependencies.
 
+### Fixed
+
+- Keep the API metadata version aligned with the workspace release.
+
 ### Known limits
 
 - Wallet creation, recovery, vault storage, signing, and broadcast remain planned.

@@ -4,7 +4,7 @@ from fastapi import FastAPI
 
 app = FastAPI(
     title="Cipher Wallet API",
-    version="0.1.0a1",
+    version="0.1.0a3",
     description="Public Litecoin Testnet gateway. It never receives wallet secrets.",
 )
 
