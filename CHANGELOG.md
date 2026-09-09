@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.1.0-alpha.3] - 2026-09-09
+
+### Changed
+
+- Run React Doctor locally and in CI through the shared verification workflow.
+- Use Vite+ for browser builds, formatting, linting, and TypeScript checks.
+- Keep the Vite core alias aligned with Vite+ and update frontend dependencies.
+
+### Known limits
+
+- Wallet creation, recovery, vault storage, signing, and broadcast remain planned.
+
 ## [0.1.0-alpha.2] - 2026-08-27
 
 ### Added
